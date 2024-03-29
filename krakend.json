@@ -1,0 +1,103 @@
+{
+  "$schema": "https://www.krakend.io/schema/krakend.json",
+  "version": 3,
+  "name": "KrakenD - API Gateway",
+  "extra_config": {
+    "auth/api-keys": {
+      "keys": [
+        {
+          "key": "b14ed7d1-a423-41c1-92ee-0298bc349b19",
+          "roles": [
+            "admin"
+          ],
+          "@description": "Admin"
+        },
+        {
+          "key": "a1113078-67a7-45f4-bcaa-ae8012eced3e",
+          "roles": [
+            "member"
+          ],
+          "@description": "Member"
+        }
+      ]
+    }
+  },
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "endpoints": [
+    {
+      "endpoint": "/v1/member",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/member",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://fastapi"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "msg"
+      ],
+      "extra_config": {
+        "auth/api-keys": {
+          "roles": [
+            "member"
+          ]
+        }
+      }
+    },
+    {
+      "endpoint": "/v1/guest",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/guest",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://fastapi"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "msg"
+      ]
+    },
+    {
+      "endpoint": "/v1/admin",
+      "method": "GET",
+      "output_encoding": "json",
+      "backend": [
+        {
+          "url_pattern": "/admin",
+          "encoding": "json",
+          "sd": "static",
+          "method": "GET",
+          "host": [
+            "http://fastapi"
+          ],
+          "disable_host_sanitize": false
+        }
+      ],
+      "input_query_strings": [
+        "msg"
+      ],
+      "extra_config": {
+        "auth/api-keys": {
+          "roles": [
+            "admin"
+          ]
+        }
+      }
+    }
+  ]
+}
